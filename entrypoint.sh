@@ -13,6 +13,11 @@ sed -i "s/CONFIG_NODE_RPC_ENABLE/$CONFIG_NODE_RPC_ENABLE/" /usr/share/nano/confi
 sed -i "s/CONFIG_RPC_ENABLE_CONTROL/$CONFIG_RPC_ENABLE_CONTROL/" /usr/share/nano/config/config-rpc.toml
 
 echo "Downloading snapshot"
+wget $CONFIG_SNAPSHOT_URL
+echo "Untarring snapshot"
+tar -xvzf $(basename $CONFIG_SNAPSHOT_URL) -C /root/BananoData/
+echo "Removing snapshot archive file"
+rm $(basename $CONFIG_SNAPSHOT_URL)
 
 usage() {
 	printf "Usage:\n"
