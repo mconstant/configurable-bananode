@@ -1,0 +1,14 @@
+[node.websocket]
+
+# WebSocket server bind address.
+# type:string,ip
+address = "::ffff:0.0.0.0"
+# Enable or disable WebSocket server.
+# type:bool
+enable = CONFIG_NODE_WEBSOCKET_ENABLE
+
+[rpc]
+
+# Enable or disable RPC.
+# type:bool
+enable = CONFIG_NODE_RPC_ENABLE
