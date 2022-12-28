@@ -10,6 +10,7 @@
 echo "Setting custom config"
 sed -i "s/CONFIG_NODE_WEBSOCKET_ENABLE/$CONFIG_NODE_WEBSOCKET_ENABLE/" /usr/share/nano/config/config-node.toml
 sed -i "s/CONFIG_NODE_RPC_ENABLE/$CONFIG_NODE_RPC_ENABLE/" /usr/share/nano/config/config-node.toml
+sed -i "s/CONFIG_NODE_ROCKSDB_ENABLE/$CONFIG_NODE_ROCKSDB_ENABLE/" /usr/share/nano/config/config-node.toml
 sed -i "s/CONFIG_RPC_ENABLE_CONTROL/$CONFIG_RPC_ENABLE_CONTROL/" /usr/share/nano/config/config-rpc.toml
 
 echo "Downloading snapshot"

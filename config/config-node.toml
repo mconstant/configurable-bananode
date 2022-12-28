@@ -12,3 +12,6 @@ enable = CONFIG_NODE_WEBSOCKET_ENABLE
 # Enable or disable RPC.
 # type:bool
 enable = CONFIG_NODE_RPC_ENABLE
+
+[node.rocksdb]
+enable = CONFIG_NODE_ROCKSDB_ENABLE
