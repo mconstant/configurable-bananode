@@ -8,4 +8,4 @@ build:
 	docker build -t xmconstantx/configurable-bananode .
 
 push:
-	docker push -t xmconstantx/configurable-bananode
+	docker push xmconstantx/configurable-bananode
