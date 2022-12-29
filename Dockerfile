@@ -11,10 +11,7 @@ COPY config /usr/share/nano/config
 
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository ppa:savoury1/backports
-RUN apt-get update
-RUN apt-get install -y aria2 --only-upgrade
+RUN apt-get install snapd -y
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/usr/bin/entrypoint.sh bananode daemon -l"]
