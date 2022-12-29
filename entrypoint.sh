@@ -13,13 +13,6 @@ sed -i "s/CONFIG_NODE_RPC_ENABLE/$CONFIG_NODE_RPC_ENABLE/" /usr/share/nano/confi
 sed -i "s/CONFIG_NODE_ROCKSDB_ENABLE/$CONFIG_NODE_ROCKSDB_ENABLE/" /usr/share/nano/config/config-node.toml
 sed -i "s/CONFIG_RPC_ENABLE_CONTROL/$CONFIG_RPC_ENABLE_CONTROL/" /usr/share/nano/config/config-rpc.toml
 
-echo "Downloading snapshot"
-aria2c -x2 $CONFIG_SNAPSHOT_URL
-echo "Untarring snapshot"
-tar -xvzf $(basename $CONFIG_SNAPSHOT_URL) -C /root/BananoData/
-echo "Removing snapshot archive file"
-rm $(basename $CONFIG_SNAPSHOT_URL)
-
 usage() {
 	printf "Usage:\n"
 	printf "  $0 bananode [daemon] [cli_options] [-l] [-v size]\n"
@@ -148,5 +141,18 @@ case $command in
 esac
 
 printf "EXECUTING: ${command}\n"
+
+echo "starting up banano node for one minute before loading snapshot"
+
+timeout -sHUP 1m /usr/bin/entry.sh $command
+
+echo "Downloading snapshot"
+aria2c -x2 $CONFIG_SNAPSHOT_URL
+echo "Untarring snapshot"
+tar -xvzf $(basename $CONFIG_SNAPSHOT_URL) -C /root/BananoData/
+echo "Removing snapshot archive file"
+rm $(basename $CONFIG_SNAPSHOT_URL)
+
+echo "starting up banano node after loading snapshot"
 
 /usr/bin/entry.sh $command
