@@ -144,10 +144,23 @@ printf "EXECUTING: ${command}\n"
 
 echo "starting up banano node for one minute before loading snapshot"
 
+kill_descendant_processes() {
+    local pid="$1"
+    local and_self="${2:-false}"
+    if children="$(pgrep -P "$pid")"; then
+        for child in $children; do
+            kill_descendant_processes "$child" true
+        done
+    fi
+    if [[ "$and_self" == true ]]; then
+        kill -9 "$pid"
+    fi
+}
 
-/usr/bin/entry.sh $command & PID=$!
+/usr/bin/entry.sh $command &
+PID=$!
 sleep 60
-pkill -P $PID
+kill_descendant_processes $PID
 
 echo "Downloading snapshot"
 aria2c -x2 $CONFIG_SNAPSHOT_URL
