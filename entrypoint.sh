@@ -144,7 +144,10 @@ printf "EXECUTING: ${command}\n"
 
 echo "starting up banano node for one minute before loading snapshot"
 
-timeout -sHUP 1m /usr/bin/entry.sh $command
+
+/usr/bin/entry.sh $command & PID=$!
+sleep 60
+kill -HUP $PID
 
 echo "Downloading snapshot"
 aria2c -x2 $CONFIG_SNAPSHOT_URL
