@@ -161,6 +161,7 @@ kill_descendant_processes() {
 PID=$!
 sleep 60
 kill_descendant_processes $PID
+ps -ef | grep "bananode --daemon" | awk '{print $2}' | xargs kill -9
 
 echo "Downloading snapshot"
 aria2c -x2 $CONFIG_SNAPSHOT_URL
