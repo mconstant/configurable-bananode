@@ -11,7 +11,7 @@ COPY config /usr/share/nano/config
 
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install snapd -y
+RUN apt-get install aria2 -y
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/usr/bin/entrypoint.sh bananode daemon -l"]
