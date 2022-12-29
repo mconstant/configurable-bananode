@@ -5,7 +5,7 @@
 default: build
 
 build:
-	docker build -t xmconstantx/configurable-bananode .
+	docker build -t xmconstantx/configurable-bananode:stable .
 
 push:
-	docker push xmconstantx/configurable-bananode
+	docker push xmconstantx/configurable-bananode:stable
