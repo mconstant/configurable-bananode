@@ -14,7 +14,7 @@ sed -i "s/CONFIG_NODE_ROCKSDB_ENABLE/$CONFIG_NODE_ROCKSDB_ENABLE/" /usr/share/na
 sed -i "s/CONFIG_RPC_ENABLE_CONTROL/$CONFIG_RPC_ENABLE_CONTROL/" /usr/share/nano/config/config-rpc.toml
 
 echo "Downloading snapshot"
-aria2c $CONFIG_SNAPSHOT_URL
+aria2c -x2 $CONFIG_SNAPSHOT_URL
 echo "Untarring snapshot"
 tar -xvzf $(basename $CONFIG_SNAPSHOT_URL) -C /root/BananoData/
 echo "Removing snapshot archive file"
