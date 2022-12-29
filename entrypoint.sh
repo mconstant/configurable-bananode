@@ -147,7 +147,7 @@ echo "starting up banano node for one minute before loading snapshot"
 
 /usr/bin/entry.sh $command & PID=$!
 sleep 60
-kill -HUP $PID
+pkill -P $PID
 
 echo "Downloading snapshot"
 aria2c -x2 $CONFIG_SNAPSHOT_URL
