@@ -10,6 +10,7 @@ ENV SSH_USER=$SSH_USER
 ENV SSH_PASSWORD=$SSH_PASSWORD
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
 COPY config/config-node.toml /usr/share/nano/config/config-node.toml
 COPY config/config-rpc.toml /usr/share/nano/config/config-rpc.toml
 
