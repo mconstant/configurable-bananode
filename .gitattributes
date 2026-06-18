@@ -1,0 +1,4 @@
+# Keep shell scripts LF so they run inside Linux containers
+# even when edited/checked out on Windows.
+*.sh text eol=lf
+entrypoint.sh text eol=lf

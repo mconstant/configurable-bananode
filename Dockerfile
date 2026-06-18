@@ -10,7 +10,9 @@ ENV SSH_USER=$SSH_USER
 ENV SSH_PASSWORD=$SSH_PASSWORD
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+# Strip any Windows CRLF line endings (so the shebang isn't read as
+# "/bin/bash\r") and make the script executable.
+RUN sed -i 's/\r$//' /usr/bin/entrypoint.sh && chmod +x /usr/bin/entrypoint.sh
 COPY config/config-node.toml /usr/share/nano/config/config-node.toml
 COPY config/config-rpc.toml /usr/share/nano/config/config-rpc.toml
 
