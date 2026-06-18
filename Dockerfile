@@ -18,6 +18,11 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install aria2 -y
 
+# Decompression tools so the snapshot can be any common archive format
+# (tar.gz, tar.zst, tar.xz, tar.bz2, zip, 7z, ...). zstd in particular is
+# required for GNU tar to auto-detect/extract .tar.zst snapshots.
+RUN apt-get install -y zstd xz-utils bzip2 unzip p7zip-full
+
 RUN apt-get install openssh-server -y
 
 RUN mkdir /root/.ssh
