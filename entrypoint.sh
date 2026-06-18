@@ -165,10 +165,53 @@ ps -ef | grep "bananode --daemon" | awk '{print $2}' | xargs kill -9
 
 echo "Downloading snapshot"
 aria2c -x2 $CONFIG_SNAPSHOT_URL
-echo "Untarring snapshot"
-tar -xvzf $(basename $CONFIG_SNAPSHOT_URL) -C /root/BananoData/
+snapshotFile="$(basename $CONFIG_SNAPSHOT_URL)"
+destDir="/root/BananoData/"
+
+echo "Extracting snapshot ${snapshotFile}"
+extract_snapshot() {
+	local file="$1"
+	local dest="$2"
+	mkdir -p "$dest"
+	case "$file" in
+		# Tarballs (compressed or not). GNU tar auto-detects the
+		# compression (gzip, bzip2, xz, zstd, lzip, ...) on extraction,
+		# so we don't pass a -z/-j/-J/--zstd flag explicitly.
+		*.tar | *.tar.* | *.tgz | *.tbz2 | *.txz | *.tzst )
+			tar -xvf "$file" -C "$dest"
+			;;
+		*.zip )
+			unzip -o "$file" -d "$dest"
+			;;
+		*.7z )
+			7z x -y -o"$dest" "$file"
+			;;
+		# Single compressed file (not a tarball) -> decompress in place.
+		*.zst )
+			zstd -d -f "$file" -o "${dest%/}/$(basename "${file%.zst}")"
+			;;
+		*.gz )
+			gunzip -c "$file" > "${dest%/}/$(basename "${file%.gz}")"
+			;;
+		*.xz )
+			xz -d -c "$file" > "${dest%/}/$(basename "${file%.xz}")"
+			;;
+		*.bz2 )
+			bunzip2 -c "$file" > "${dest%/}/$(basename "${file%.bz2}")"
+			;;
+		* )
+			# Unknown extension: fall back to letting tar sniff the
+			# magic bytes, since most snapshots are tarballs.
+			echo "Unknown archive extension for ${file}, attempting tar auto-detect"
+			tar -xvf "$file" -C "$dest"
+			;;
+	esac
+}
+
+extract_snapshot "$snapshotFile" "$destDir"
+
 echo "Removing snapshot archive file"
-rm $(basename $CONFIG_SNAPSHOT_URL)
+rm "$snapshotFile"
 
 echo "starting up banano node after loading snapshot"
 

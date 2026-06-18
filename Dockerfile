@@ -10,13 +10,20 @@ ENV SSH_USER=$SSH_USER
 ENV SSH_PASSWORD=$SSH_PASSWORD
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+# Strip any Windows CRLF line endings (so the shebang isn't read as
+# "/bin/bash\r") and make the script executable.
+RUN sed -i 's/\r$//' /usr/bin/entrypoint.sh && chmod +x /usr/bin/entrypoint.sh
 COPY config/config-node.toml /usr/share/nano/config/config-node.toml
 COPY config/config-rpc.toml /usr/share/nano/config/config-rpc.toml
 
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install aria2 -y
+
+# Decompression tools so the snapshot can be any common archive format
+# (tar.gz, tar.zst, tar.xz, tar.bz2, zip, 7z, ...). zstd in particular is
+# required for GNU tar to auto-detect/extract .tar.zst snapshots.
+RUN apt-get install -y zstd xz-utils bzip2 unzip p7zip-full
 
 RUN apt-get install openssh-server -y
 
